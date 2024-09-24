@@ -6,10 +6,12 @@
 
 /*- Includes ----------------------------------------------------------------*/
 #include "hal_gpio.h"
+#define DAP_CONFIG_ENABLE_TMS_DIR
 
 /*- Definitions -------------------------------------------------------------*/
 HAL_GPIO_PIN(SWCLK_TCK,      0, 11, sio_11)
 HAL_GPIO_PIN(SWDIO_TMS,      0, 12, sio_12)
+HAL_GPIO_PIN(SWDIO_TMS_DIR,  0, 9,  sio_9)
 HAL_GPIO_PIN(TDI,            0, 13, sio_13)
 HAL_GPIO_PIN(TDO,            0, 14, sio_14)
 HAL_GPIO_PIN(nRESET,         0, 15, sio_15)

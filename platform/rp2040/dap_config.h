@@ -147,11 +147,17 @@ static inline void DAP_CONFIG_SWCLK_TCK_clr(void)
 static inline void DAP_CONFIG_SWDIO_TMS_in(void)
 {
   HAL_GPIO_SWDIO_TMS_in();
+#ifdef DAP_CONFIG_ENABLE_TMS_DIR
+  HAL_GPIO_SWDIO_TMS_DIR_clr();
+#endif
 }
 
 //-----------------------------------------------------------------------------
 static inline void DAP_CONFIG_SWDIO_TMS_out(void)
 {
+#ifdef DAP_CONFIG_ENABLE_TMS_DIR
+  HAL_GPIO_SWDIO_TMS_DIR_set();
+#endif
   HAL_GPIO_SWDIO_TMS_out();
 }
 
@@ -160,7 +166,14 @@ static inline void DAP_CONFIG_SETUP(void)
 {
   HAL_GPIO_SWCLK_TCK_in();
   HAL_GPIO_SWDIO_TMS_in();
-  HAL_GPIO_nRESET_in();
+#ifdef DAP_CONFIG_ENABLE_TMS_DIR
+  HAL_GPIO_SWDIO_TMS_DIR_out();
+  HAL_GPIO_SWDIO_TMS_DIR_clr();
+#endif
+  // EK Change to output and set high dir is always output TODO: add dir pin for reset change back to input
+  // HAL_GPIO_nRESET_in();
+  HAL_GPIO_nRESET_out();
+  HAL_GPIO_nRESET_set();
 #ifdef DAP_CONFIG_ENABLE_JTAG
   HAL_GPIO_TDO_in();
   HAL_GPIO_TDI_in();
@@ -172,7 +185,14 @@ static inline void DAP_CONFIG_DISCONNECT(void)
 {
   HAL_GPIO_SWCLK_TCK_in();
   HAL_GPIO_SWDIO_TMS_in();
-  HAL_GPIO_nRESET_in();
+#ifdef DAP_CONFIG_ENABLE_TMS_DIR
+  HAL_GPIO_SWDIO_TMS_DIR_out();
+  HAL_GPIO_SWDIO_TMS_DIR_clr();
+#endif
+  // EK Change to output and set high dir is always output TODO: add dir pin for reset change back to input
+  // HAL_GPIO_nRESET_in();
+  HAL_GPIO_nRESET_out();
+  HAL_GPIO_nRESET_set();
 #ifdef DAP_CONFIG_ENABLE_JTAG
   HAL_GPIO_TDO_in();
   HAL_GPIO_TDI_in();
@@ -182,6 +202,10 @@ static inline void DAP_CONFIG_DISCONNECT(void)
 //-----------------------------------------------------------------------------
 static inline void DAP_CONFIG_CONNECT_SWD(void)
 {
+#ifdef DAP_CONFIG_ENABLE_TMS_DIR
+  HAL_GPIO_SWDIO_TMS_DIR_out();
+  HAL_GPIO_SWDIO_TMS_DIR_set();
+#endif
   HAL_GPIO_SWDIO_TMS_out();
   HAL_GPIO_SWDIO_TMS_set();
 
@@ -200,6 +224,10 @@ static inline void DAP_CONFIG_CONNECT_SWD(void)
 //-----------------------------------------------------------------------------
 static inline void DAP_CONFIG_CONNECT_JTAG(void)
 {
+#ifdef DAP_CONFIG_ENABLE_TMS_DIR
+  HAL_GPIO_SWDIO_TMS_DIR_out();
+  HAL_GPIO_SWDIO_TMS_DIR_set();
+#endif
   HAL_GPIO_SWDIO_TMS_out();
   HAL_GPIO_SWDIO_TMS_set();
 
@@ -229,11 +257,10 @@ __attribute__((always_inline))
 static inline void DAP_CONFIG_DELAY(uint32_t cycles)
 {
   asm volatile (
-    "1: sub %[cycles], %[cycles], #1 \n"
-    "   bne 1b \n"
-    : [cycles] "+l"(cycles)
-  );
+      "1: sub %[cycles], %[cycles], #1 \n"
+      "   bne 1b \n"
+      : [cycles] "+l"(cycles)
+      );
 }
 
 #endif // _DAP_CONFIG_H_
-

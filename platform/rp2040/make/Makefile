@@ -8,7 +8,7 @@ BIN = free_dap_rp2040
 CC      = arm-none-eabi-gcc
 OBJCOPY = arm-none-eabi-objcopy
 SIZE    = arm-none-eabi-size
-BIN2UF2 = bin2uf2
+BIN2UF2 = ./bin2uf2
 
 ifeq ($(OS), Windows_NT)
   MKDIR = gmkdir

@@ -1,0 +1,14 @@
+# ignore GNU global files
+GPATH
+GRTAGS
+GSYMS
+GTAGS
+
+# firmware binary files
+*.uf2
+
+# Ignore macOS crap
+.DS_Store
+
+.vscode-ctags
+.vscode

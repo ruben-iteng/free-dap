@@ -1,0 +1,42 @@
+name: Build RP2040 Firmware
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-rp2040:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ARM GCC toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make gcc-arm-none-eabi binutils-arm-none-eabi
+
+      - name: Build bin2uf2 utility
+        run: |
+          git clone --depth=1 https://github.com/ataradov/tools.git /tmp/tools
+          make -C /tmp/tools/bin2uf2
+          cp /tmp/tools/bin2uf2/bin2uf2 platform/rp2040/make/
+
+      - name: Build firmware (RP2040)
+        working-directory: platform/rp2040/make
+        run: make all
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: free-dap-rp2040-build
+          path: |
+            bin/free_dap_rp2040.uf2
+            bin/free_dap_rp2040.bin
+            platform/rp2040/make/build/free_dap_rp2040.elf
+            platform/rp2040/make/build/free_dap_rp2040.hex
+            platform/rp2040/make/build/free_dap_rp2040.bin
+            platform/rp2040/make/build/free_dap_rp2040.uf2

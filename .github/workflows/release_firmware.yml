@@ -1,0 +1,60 @@
+# This workflow builds the firmware for the RP2040 board on a new version tag
+# and creates a GitHub release with the build artifacts.
+name: Release RP2040 Firmware
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ARM GCC toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make gcc-arm-none-eabi binutils-arm-none-eabi
+
+      - name: Build bin2uf2 utility
+        run: |
+          git clone --depth=1 https://github.com/ataradov/tools.git /tmp/tools
+          make -C /tmp/tools/bin2uf2
+          cp /tmp/tools/bin2uf2/bin2uf2 platform/rp2040/make/
+
+      - name: Build firmware (RP2040)
+        working-directory: platform/rp2040/make
+        run: make all
+
+      - name: Create GitHub Release and upload assets
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          if [ -z "$tag" ]; then
+            tag="${GITHUB_REF##*/}"
+          fi
+
+          gh release create "$tag" \
+            --title "$tag" \
+            --generate-notes \
+            --draft \
+          || echo "Release already exists, continuing"
+
+          gh release upload "$tag" \
+            bin/free_dap_rp2040.uf2 \
+            bin/free_dap_rp2040.bin \
+            platform/rp2040/make/build/free_dap_rp2040.elf \
+            platform/rp2040/make/build/free_dap_rp2040.hex \
+            platform/rp2040/make/build/free_dap_rp2040.bin \
+            platform/rp2040/make/build/free_dap_rp2040.uf2 \
+            --clobber
+

@@ -21,7 +21,7 @@ This is a specialized version of Alex Taradov's implementation of the CMSIS-DAP 
 ## Binaries
 
 Binaries are automatically built and added to the [releases](https://github.com/ruben-iteng/Free-DAP/releases/latest).
-Just download the binary, put your RP2040 into boot mode (hold the boot button while plugging in the USB cable) and copy the binary to the RP2040 drive. It will automatically reboot into the new firmware.
+Just download the uf2 file, put your RP2040 into boot mode (hold the boot button while plugging in the USB cable) and copy the file to the RP2040 drive. It will automatically reboot into the new firmware.
 
 ## Pinout
 

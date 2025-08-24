@@ -50,8 +50,6 @@ jobs:
           || echo "Release already exists, continuing"
 
           gh release upload "$tag" \
-            bin/free_dap_rp2040.uf2 \
-            bin/free_dap_rp2040.bin \
             platform/rp2040/make/build/free_dap_rp2040.elf \
             platform/rp2040/make/build/free_dap_rp2040.hex \
             platform/rp2040/make/build/free_dap_rp2040.bin \

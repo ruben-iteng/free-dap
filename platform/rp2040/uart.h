@@ -17,4 +17,3 @@ bool uart_read_byte(int *byte);
 void uart_set_break(bool brk);
 
 #endif // _UART_H_
-

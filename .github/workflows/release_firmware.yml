@@ -57,4 +57,3 @@ jobs:
             platform/rp2040/make/build/free_dap_rp2040.bin \
             platform/rp2040/make/build/free_dap_rp2040.uf2 \
             --clobber
-

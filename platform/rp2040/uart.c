@@ -220,5 +220,3 @@ void UART_IRQ_HANDLER(void)
     }
   }
 }
-
-

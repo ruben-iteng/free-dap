@@ -47,4 +47,3 @@ int dap_process_request(uint8_t *req, int req_size, uint8_t *resp, int resp_size
 void dap_clock_test(int delay);
 
 #endif // _DAP_H_
-

@@ -29,5 +29,3 @@ HAL_GPIO_PIN(UART_RX,        0, 1, uart0_rx)
 #define UART_CLOCK           120000000
 
 #endif // _HAL_CONFIG_H_
-
-

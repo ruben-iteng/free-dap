@@ -77,7 +77,6 @@ $(BUILD)/$(BIN).uf2: $(BUILD)/$(BIN).bin
 
 release: $(BUILD)/$(BIN).uf2
 	@echo release
-	@cp $(BUILD)/$(BIN).uf2 ../../../bin/
 
 directory:
 	@$(MKDIR) -p $(BUILD)

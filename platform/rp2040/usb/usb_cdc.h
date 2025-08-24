@@ -207,4 +207,3 @@ void usb_cdc_control_line_state_update(int line_state);
 void usb_cdc_send_break(int duration);
 
 #endif // _USB_CDC_H_
-

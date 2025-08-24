@@ -56,4 +56,3 @@ SECTIONS
   PROVIDE(_text_start = ORIGIN(flash));
   PROVIDE(_stack_top = ORIGIN(ram) + LENGTH(ram));
 }
-

@@ -30,4 +30,3 @@ void usb_task(void);
 void usb_configuration_callback(int config);
 
 #endif // _USB_H_
-
